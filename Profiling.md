@@ -11,9 +11,9 @@ Engine integrates [easy_profiler](https://github.com/yse/easy_profiler) for CPU 
 
 [[images/profiler.png]]
 
-### Macros
+# Macros
 
-# URHO3D_PROFILE
+## URHO3D_PROFILE
 
 Profile a block of code until end of scope. Pass unquoted string as a name of block.
 
@@ -27,7 +27,7 @@ void ProfiledFunction()
 }
 ```
 
-# URHO3D_PROFILE_SCOPED
+## URHO3D_PROFILE_SCOPED
 
 Profile a block of code until end of scope. Pass quoted string as a name of block. Use this for blocks whose name has to be dynamically constructed. If possible avoid this macro and use `URHO3D_PROFILE`.
 
@@ -42,7 +42,7 @@ void ProfiledFunction()
 }
 ```
 
-# URHO3D_PROFILE_NONSCOPED and URHO3D_PROFILE_END
+## URHO3D_PROFILE_NONSCOPED and URHO3D_PROFILE_END
 
 `URHO3D_PROFILE_NONSCOPED` defines a profiled block of code which does not end at the termination of current scope. Block must be terminated with `URHO3D_PROFILE_END`.
 
@@ -68,7 +68,7 @@ void DoWork()
 }
 ```
 
-# URHO3D_PROFILE_THREAD
+## URHO3D_PROFILE_THREAD
 
 If you use worker threads this macro can be used to give meaningful names to the threads. Place this macro at the start of worker function.
 
