@@ -10,10 +10,10 @@ Current C# wrapper features:
 * Serialization and deserialization of managed components
 * Conversion of getters and setters to C# properties
 * mono and .net framework support requiring version 4.7
+* Member variable and method renaming to match C# conventions
 
 Planned features:
 
-* Member variable and method renaming to match C# conventions
 * Managed plugins for applications and editor
 * Support for generating bindings for user code
 
@@ -43,11 +43,11 @@ namespace DemoApplication
 
     class DemoApplication : Application
     {
-        private Scene scene_;
-        private Viewport viewport_;
-        private Node camera_;
-        private Node cube_;
-        private Node light_;
+        private Scene _scene;
+        private Viewport _viewport;
+        private Node _camera;
+        private Node _cube;
+        private Node _light;
 
         public DemoApplication(Context context) : base(context)
         {
@@ -56,46 +56,46 @@ namespace DemoApplication
         public override void Setup()
         {
             var currentDir = Directory.GetCurrentDirectory();
-            engineParameters_[EngineDefs.EP_FULL_SCREEN] = false;
-            engineParameters_[EngineDefs.EP_WINDOW_WIDTH] = 1920;
-            engineParameters_[EngineDefs.EP_WINDOW_HEIGHT] = 1080;
-            engineParameters_[EngineDefs.EP_WINDOW_TITLE] = "Hello C#";
-            engineParameters_[EngineDefs.EP_RESOURCE_PREFIX_PATHS] = $"{currentDir};{currentDir}/..";
+            EngineParameters[EngineDefs.EP_FULL_SCREEN] = false;
+            EngineParameters[EngineDefs.EP_WINDOW_WIDTH] = 1920;
+            EngineParameters[EngineDefs.EP_WINDOW_HEIGHT] = 1080;
+            EngineParameters[EngineDefs.EP_WINDOW_TITLE] = "Hello C#";
+            EngineParameters[EngineDefs.EP_RESOURCE_PREFIX_PATHS] = $"{currentDir};{currentDir}/..";
         }
 
         public override void Start()
         {
             Input.SetMouseVisible(true);
 
-            context_.RegisterFactory<RotateObject>();
+            Context.RegisterFactory<RotateObject>();
 
             // Viewport
-            scene_ = new Scene(context_);
-            scene_.CreateComponent<Octree>();
+            _scene = new Scene(Context);
+            _scene.CreateComponent<Octree>();
 
-            camera_ = scene_.CreateChild("Camera");
-            viewport_ = new Viewport(context_, scene_, camera_.CreateComponent<Camera>());
-            Renderer.SetViewport(0, viewport_);
+            _camera = _scene.CreateChild("Camera");
+            _viewport = new Viewport(Context, _scene, _camera.CreateComponent<Camera>());
+            Renderer.SetViewport(0, _viewport);
 
             // Background
             Renderer.DefaultZone.FogColor = new Color(0.5f, 0.5f, 0.7f);
 
             // Scene
-            camera_.Position = new Vector3(0, 2, -2);
-            camera_.LookAt(Vector3.ZERO);
+            _camera.Position = new Vector3(0, 2, -2);
+            _camera.LookAt(Vector3.ZERO);
 
             // Cube
-            cube_ = scene_.CreateChild("Cube");
-            var model = cube_.CreateComponent<StaticModel>();
+            _cube = _scene.CreateChild("Cube");
+            var model = _cube.CreateComponent<StaticModel>();
             model.Model = Cache.GetResource<Model>("Models/Box.mdl");
             model.SetMaterial(0, Cache.GetResource<Material>("Materials/Stone.xml"));
-            cube_.CreateComponent<RotateObject>();
+            _cube.CreateComponent<RotateObject>();
 
             // Light
-            light_ = scene_.CreateChild("Light");
-            light_.CreateComponent<Light>();
-            light_.Position = new Vector3(0, 2, -1);
-            light_.LookAt(Vector3.ZERO);
+            _light = _scene.CreateChild("Light");
+            _light.CreateComponent<Light>();
+            _light.Position = new Vector3(0, 2, -1);
+            _light.LookAt(Vector3.ZERO);
 
             SubscribeToEvent(CoreEvents.E_UPDATE, args =>
             {
