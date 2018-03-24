@@ -4,4 +4,4 @@ Welcome to the Urho3D wiki!
 * [Using SDK](Using-SDK)
 * [Profiling](Profiling)
 * [Editor Overview](Editor)
-* [C# Support](C#-support)
+* [C# Support](C%23-support)
