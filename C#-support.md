@@ -129,8 +129,8 @@ namespace DemoApplication
 ### Build
 
 1. Install dependencies:
-  * Archlinux: `pacman -S mono llvm clang`
-  * Ubuntu: `apt-get install mono-devel llvm clang`
+   * Archlinux: `pacman -S mono llvm clang`
+   * Ubuntu: `apt-get install mono-devel llvm clang`
 2. Configure build: `cmake -DURHO3D_CSHARP=ON /path/to/code`
 3. `cmake --build`
 
@@ -146,8 +146,8 @@ namespace DemoApplication
 ### Build
 
 1. Install dependencies:
-  * Latest llvm: http://releases.llvm.org/download.html
-  * Latest mono: http://www.mono-project.com/download/stable/#download-win
+   * Latest llvm: http://releases.llvm.org/download.html
+   * Latest mono: http://www.mono-project.com/download/stable/#download-win
 2. Configure build: `-DURHO3D_CSHARP=ON -DLLVM_VERSION_EXPLICIT=5.0.1 -DLIBCLANG_LIBRARY="C:/Program Files/LLVM/lib/libclang.lib" -DLIBCLANG_INCLUDE_DIR="C:/Program Files/LLVM/include" -DLIBCLANG_SYSTEM_INCLUDE_DIR="C:/"Program Files"/LLVM/lib/clang/5.0.1/include" -DCLANG_BINARY="C:/Program Files/LLVM/bin/clang++.exe" /path/to/code`. Adjust parameters as necessary for LLVM version you have installed.
 3. `cmake --build`
 
@@ -159,7 +159,7 @@ Build of sample may fail with `ERROR: The SDK location does not contain a c:\Pro
 
 Using Mono on windows is complicated. Visual Studio does not support building and debugging Mono applications. However there are several options.
 
-* Use [Rider IDE](https://www.jetbrains.com/rider/). Free version is not available.
+* Use [Rider](https://www.jetbrains.com/rider/). Free version is not available.
 * Use [Visual Studio Code](https://code.visualstudio.com/) + [Mono Debug](https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) extension. Free.
 * Use [MonoDevelop](http://www.monodevelop.com/download/#fndtn-download-win). Free. No windows binaries available, you must build it from source code yourself.
 * Use Visual Studio for editing and compiling. Debugging is not available. Script below enables using Mono as target framework. Run with Administrator rights.
@@ -196,6 +196,18 @@ It is possible to create standalone native executables from managed applications
 ### Build
 
 1. Install dependencies:
-  * `brew install pkg-config mono llvm`
+   * `brew install pkg-config mono llvm`
 2. Configure build: `-DURHO3D_CSHARP=ON LLVM_CONFIG_BINARY=/usr/local/opt/llvm/bin/llvm-config /path/to/code`. Adjust parameters as necessary for LLVM version you have installed.
 3. `cmake --build`
+
+### Run
+
+Use any of following IDEs:
+* [Rider]((https://www.jetbrains.com/rider/) (Paid)
+* [MonoDevelop](http://www.monodevelop.com/download/#fndtn-download-win) (Free)
+* [Visual Studio for Mac](https://www.visualstudio.com/vs/mac/) (Free)
+
+1. Create C# project in IDE of your choice.
+2. Add Urho3DNet.dll reference to your C# project. This file is located in `/path/to/buildtree/bin`.
+3. Make sure `libUrho3D.dylib` and/or `libUrho3DCSharp.dylib` are in the same folder as `Urho3DNet.dll`. Referenced .net DLLs get copied to executable binaray dir, but native libraries used by these dlls are not.
+4. Build and run.
