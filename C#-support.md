@@ -203,7 +203,7 @@ It is possible to create standalone native executables from managed applications
 ### Run
 
 Use any of following IDEs:
-* [Rider]((https://www.jetbrains.com/rider/) (Paid)
+* [Rider](https://www.jetbrains.com/rider/) (Paid)
 * [MonoDevelop](http://www.monodevelop.com/download/#fndtn-download-win) (Free)
 * [Visual Studio for Mac](https://www.visualstudio.com/vs/mac/) (Free)
 
