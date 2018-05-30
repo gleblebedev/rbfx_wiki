@@ -10,11 +10,11 @@
 * Serialization and deserialization of managed components
 * Conversion of getters and setters to C# properties
 * Member variable and method renaming to match C# conventions
+* Support for generating bindings for user code
 
 ## Planned features
 
 * Managed plugins for applications and editor
-* Support for generating bindings for user code
 
 ## How the code looks
 
@@ -121,7 +121,7 @@ namespace DemoApplication
 
 ## Requirements
 
-* Mono (5.4+ is known to work)
+* Mono (5.4+ is known to work) or .net framework
 * Clang
 
 ## Linux
@@ -147,7 +147,7 @@ namespace DemoApplication
 
 1. Install dependencies:
    * Latest llvm: http://releases.llvm.org/download.html
-   * Latest mono: http://www.mono-project.com/download/stable/#download-win
+   * (Optional) Latest mono: http://www.mono-project.com/download/stable/#download-win and additionally pass `-DURHO3D_WITH_MONO=ON` to cmake command in the step below.
 2. Configure build: `-DURHO3D_CSHARP=ON -DLLVM_VERSION_EXPLICIT=5.0.1 -DLIBCLANG_LIBRARY="C:/Program Files/LLVM/lib/libclang.lib" -DLIBCLANG_INCLUDE_DIR="C:/Program Files/LLVM/include" -DLIBCLANG_SYSTEM_INCLUDE_DIR="C:/"Program Files"/LLVM/lib/clang/5.0.1/include" -DCLANG_BINARY="C:/Program Files/LLVM/bin/clang++.exe" /path/to/code`. Adjust parameters as necessary for LLVM version you have installed.
 3. `cmake --build`
 
@@ -157,7 +157,11 @@ Build of sample may fail with `ERROR: The SDK location does not contain a c:\Pro
 
 ### Run
 
-Using Mono on windows is complicated. Visual Studio does not support building and debugging Mono applications. However there are several options.
+Use Visual Studio with .NET framework and build engine with `-DURHO3D_WITH_MONO=OFF`.
+
+---
+
+Alternatively you may use Mono on windows as well, however it is complicated. Visual Studio does not support building and debugging Mono applications. However there are several options.
 
 * Use [Rider](https://www.jetbrains.com/rider/). Free version is not available.
 * Use [Visual Studio Code](https://code.visualstudio.com/) + [Mono Debug](https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) extension. Free.
