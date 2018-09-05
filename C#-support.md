@@ -5,24 +5,47 @@
 * Extensive API coverage estimated at 90%+
 * Support for inheriting native classes and overriding their virtual methods
 * Support for `ref` parameters
-* Support for several native containers like `VariantMap` and `StringVector`
-* Mapping of `PODVector<T>` and `Vector<SharedPtr<T>>` containers to C# arrays
+* Support for native containers (`HashMap<T>`, `Vector<T>`, `PODVector<T>`)
+* Transparently unwrapping `SharedPtr<T>` and `WeakPtr<T>`
 * Serialization and deserialization of managed components
-* Conversion of getters and setters to C# properties
 * Member variable and method renaming to match C# conventions
-* Support for generating bindings for user code
 
 ## Planned features
 
 * Managed plugins for applications and editor
+* Wrap physics subsystem
+* Wrap networking subsystem
+* Wrap Urho3D subsystem
 
 ## How the code looks
 
 ```cs
+//
+// Copyright (c) 2018 Rokas Kupstys
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
 using System;
 using System.Diagnostics;
 using System.IO;
-using Urho3D;
+using Urho3DNet;
+using ImGuiNet;
 
 namespace DemoApplication
 {
@@ -31,15 +54,16 @@ namespace DemoApplication
     {
         public RotateObject(Context context) : base(context)
         {
-            UpdateEventMask = UseUpdate;
+            SetUpdateEventMask(UpdateEvent.UseUpdate);
         }
 
         public override void Update(float timeStep)
         {
             var d = new Quaternion(10 * timeStep, 20 * timeStep, 30 * timeStep);
-            Node.Rotate(d);
+            GetNode().Rotate(d);
         }
     }
+
 
     class DemoApplication : Application
     {
@@ -56,49 +80,57 @@ namespace DemoApplication
         public override void Setup()
         {
             var currentDir = Directory.GetCurrentDirectory();
-            EngineParameters[EngineDefs.EpFullScreen] = false;
-            EngineParameters[EngineDefs.EpWindowWidth] = 1920;
-            EngineParameters[EngineDefs.EpWindowHeight] = 1080;
-            EngineParameters[EngineDefs.EpWindowTitle] = "Hello C#";
-            EngineParameters[EngineDefs.EpResourcePrefixPaths] = $"{currentDir};{currentDir}/..";
+            EngineParameters[Urho3D.EpFullScreen] = false;
+            EngineParameters[Urho3D.EpWindowWidth] = 1920;
+            EngineParameters[Urho3D.EpWindowHeight] = 1080;
+            EngineParameters[Urho3D.EpWindowTitle] = "Hello C#";
+            EngineParameters[Urho3D.EpResourcePrefixPaths] = $"{currentDir};{currentDir}/..";
         }
 
         public override void Start()
         {
-            Input.SetMouseVisible(true);
+            GetInput().SetMouseVisible(true);
 
             // Viewport
-            _scene = new Scene(Context);
+            _scene = new Scene(GetContext());
             _scene.CreateComponent<Octree>();
 
             _camera = _scene.CreateChild("Camera");
-            _viewport = new Viewport(Context, _scene, _camera.CreateComponent<Camera>());
-            Renderer.SetViewport(0, _viewport);
+            _viewport = new Viewport(GetContext());
+            _viewport.SetScene(_scene);
+            _viewport.SetCamera(_camera.CreateComponent<Camera>());
+            GetRenderer().SetViewport(0, _viewport);
 
             // Background
-            Renderer.DefaultZone.FogColor = new Color(0.5f, 0.5f, 0.7f);
+            GetRenderer().GetDefaultZone().SetFogColor(new Color(0.5f, 0.5f, 0.7f));
 
             // Scene
-            _camera.Position = new Vector3(0, 2, -2);
+            _camera.SetPosition(new Vector3(0, 2, -2));
             _camera.LookAt(Vector3.Zero);
 
             // Cube
             _cube = _scene.CreateChild("Cube");
             var model = _cube.CreateComponent<StaticModel>();
-            model.Model = Cache.GetResource<Model>("Models/Box.mdl");
-            model.SetMaterial(0, Cache.GetResource<Material>("Materials/Stone.xml"));
-            _cube.CreateComponent<RotateObject>();
+            model.SetModel(GetCache().GetResource<Model>("Models/Box.mdl"));
+            model.SetMaterial(0, GetCache().GetResource<Material>("Materials/Stone.xml"));
+            var rotator = _cube.CreateComponent<RotateObject>();
 
             // Light
             _light = _scene.CreateChild("Light");
             _light.CreateComponent<Light>();
-            _light.Position = new Vector3(0, 2, -1);
+            _light.SetPosition(new Vector3(0, 2, -1));
             _light.LookAt(Vector3.Zero);
 
-            SubscribeToEvent(CoreEvents.E_UPDATE, args =>
+            SubscribeToEvent(E.Update, args =>
             {
-                var timestep = args[Update.P_TIMESTEP].Float;
+                var timestep = args[E.Update.TimeStep].GetFloat();
                 Debug.Assert(this != null);
+
+                if (ImGui.Begin("Urho3D.NET"))
+                {
+                    ImGui.TextColored(Color.Red, $"Hello world from C#.\nFrame time: {timestep}");
+                }
+                ImGui.End();
             });
         }
     }
@@ -121,97 +153,23 @@ namespace DemoApplication
 
 ## Requirements
 
-* Mono (5.4+ is known to work) or .net framework
-* Clang
+* Mono (latest) or .NET framework (4.7.1)
+* SWIG (prebuilt binaries available for windows/macos/ubuntu 14.04)
+
+## Build
+
+1. Configure build: `cmake -DBUILD_SHARED_LIBS=ON -DURHO3D_FEATURES=CSHARP;SYSTEMUI /path/to/code`
+2. `cmake --build .`
+3. Create C# project in IDE of your choice, targeting .NET framework 4.7.1.
+4. Copy `bin/CoreData` and `bin/Data` to output directory (where .exe will be created).
+5. Add `bin/{Urho3D,ImGui}Net.dll` as references to your project.
+  * Linux: Copy `bin/lib{Urho3D,Urho3DCSharp,ImGuiCSharp}.so` to output directory.
+  * Windows: Copy `bin/{Urho3D,Urho3DCSharp,ImGuiCSharp}.dll` to output directory.
+  * MacOS: Copy `bin/lib{Urho3D,Urho3DCSharp,ImGuiCSharp}.dylib` to output directory.
+6. Build and run. For a quick test you may copy code from `Source/Samples/102_CSharpProject/Project.cs`.
 
 ## Linux
 
-### Build
-
-1. Install dependencies:
-   * Archlinux: `pacman -S mono llvm clang`
-   * Ubuntu: `apt-get install mono-devel llvm clang`
-2. Configure build: `cmake -DURHO3D_CSHARP=ON /path/to/code`
-3. `cmake --build`
-
-### Run
-
-1. Create C# project in IDE of your choice.
-2. Add Urho3DNet.dll reference to your C# project. This file is located in `/path/to/buildtree/bin`.
-3. Make sure `libUrho3D.so` and/or `libUrho3DCSharp.so` are in the same folder as `Urho3DNet.dll`. Referenced .net DLLs get copied to executable binaray dir, but native libraries used by these dlls are not.
-4. Build and run.
-
-## Windows
-
-### Build
-
-1. Install dependencies:
-   * Latest llvm: http://releases.llvm.org/download.html
-   * (Optional) Latest mono: http://www.mono-project.com/download/stable/#download-win and additionally pass `-DURHO3D_WITH_MONO=ON` to cmake command in the step below.
-2. Configure build: `-DURHO3D_CSHARP=ON -DLLVM_VERSION_EXPLICIT=5.0.1 -DLIBCLANG_LIBRARY="C:/Program Files/LLVM/lib/libclang.lib" -DLIBCLANG_INCLUDE_DIR="C:/Program Files/LLVM/include" -DLIBCLANG_SYSTEM_INCLUDE_DIR="C:/"Program Files"/LLVM/lib/clang/5.0.1/include" -DCLANG_BINARY="C:/Program Files/LLVM/bin/clang++.exe" /path/to/code`. Adjust parameters as necessary for LLVM version you have installed.
-3. `cmake --build`
-
-#### Known issues
-
-Build of sample may fail with `ERROR: The SDK location does not contain a c:\Program Files\Mono/bin/mono runtime`. In this case create empty file `c:\Program Files\Mono\bin\mono`. Mono issue [#7731](https://github.com/mono/mono/issues/7731).
-
-### Run
-
-Use Visual Studio with .NET framework and build engine with `-DURHO3D_WITH_MONO=OFF`.
-
----
-
-Alternatively you may use Mono on windows as well, however it is complicated. Visual Studio does not support building and debugging Mono applications. However there are several options.
-
-* Use [Rider](https://www.jetbrains.com/rider/). Free version is not available.
-* Use [Visual Studio Code](https://code.visualstudio.com/) + [Mono Debug](https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) extension. Free.
-* Use [MonoDevelop](http://www.monodevelop.com/download/#fndtn-download-win). Free. No windows binaries available, you must build it from source code yourself.
-* Use Visual Studio for editing and compiling. Debugging is not available. Script below enables using Mono as target framework. Run with Administrator rights.
-```
-@echo off
-
-REG ADD HKLM\SOFTWARE\Microsoft\.NETFramework\v4.0.30319\SKUs\.NETFramework,Version=v4.5,Profile=Mono
-REG ADD HKLM\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319\SKUs\.NETFramework,Version=v4.5,Profile=Mono
-
-set "NETDIR=C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5"
-mkdir "%NETDIR%\Profile"
-mklink /d "%NETDIR%\Profile\Mono" "C:\Program Files\Mono\lib\mono\4.5"
-mkdir "%NETDIR%\Profile\Mono\RedistList"
-
-echo ^<?xml version="1.0" encoding="utf-8"?^>                                                                     >  "%NETDIR%\Profile\Mono\RedistList\FrameworkList.xml"
-echo ^<FileList Redist="Mono-4.5" Name="Mono 4.5 Profile" RuntimeVersion="4.5" ToolsVersion="4.0"^> ^</FileList^> >> "%NETDIR%\Profile\Mono\RedistList\FrameworkList.xml"
-```
-
-1. Create C# project in IDE of your choice.
-2. Add Urho3DNet.dll reference to your C# project. This file is located in `C:/path/to/buildtree/bin`.
-3. Make sure `Urho3D.dll` and/or `Urho3DCSharp.dll` are in the same folder as `Urho3DNet.dll`. Referenced .net DLLs get copied to executable binaray dir, but native libraries used by these dlls are not.
-4. Build and run.
-
-#### Standalone distribution
-
-It is possible to create standalone native executables from managed applications. Such executable will depend only on `Urho3D.dll`, `Urho3DCSharp.dll` (optional) and `mono-2.0-sgen.dll`. This is how you transform managed executable to native one:
-
-```sh
-"C:/Program Files/Mono/bin/mkbundle.bat" --deps -L "C:/Program Files/Mono/bin/lib/mono/4.5" -o MyNativeGame.exe MyManagedGame.exe
-```
-
-## Mac OS
-
-### Build
-
-1. Install dependencies:
-   * `brew install pkg-config mono llvm`
-2. Configure build: `-DURHO3D_CSHARP=ON LLVM_CONFIG_BINARY=/usr/local/opt/llvm/bin/llvm-config /path/to/code`. Adjust parameters as necessary for LLVM version you have installed.
-3. `cmake --build`
-
-### Run
-
-Use any of following IDEs:
-* [Rider](https://www.jetbrains.com/rider/) (Paid)
-* [MonoDevelop](http://www.monodevelop.com/download/#fndtn-download-win) (Free)
-* [Visual Studio for Mac](https://www.visualstudio.com/vs/mac/) (Free)
-
-1. Create C# project in IDE of your choice.
-2. Add Urho3DNet.dll reference to your C# project. This file is located in `/path/to/buildtree/bin`.
-3. Make sure `libUrho3D.dylib` and/or `libUrho3DCSharp.dylib` are in the same folder as `Urho3DNet.dll`. Referenced .net DLLs get copied to executable binaray dir, but native libraries used by these dlls are not.
-4. Build and run.
+Project uses customized version of SWIG. Chances are prebuilt binaries will not run on your distribution.
+1. Download https://github.com/rokups/swig/archive/Urho3D.zip and build it.
+2. Additionally pass `-DSWIG_EXECUTABLE=/path/to/bin/swig -DSWIG_DIR=/path/to/share/swig/4.0.0` to cmake pointing to custom SWIG build.
