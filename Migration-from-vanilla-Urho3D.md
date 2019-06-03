@@ -32,7 +32,7 @@ They are lacking useful features and it would have taken too much resources to m
 
 **Why not standard containers of STL?**
 
-Main reasons against STD are worse debug performance and unspecified container size that makes them incompatible with `Urho3D::Variant`. EASTL also has more features than STL and could be extended.
+Main reasons against STL are worse debug performance and unspecified container size that makes them incompatible with `Urho3D::Variant`. EASTL also has more features than STL and could be extended.
 
 **Why keep SharedPtr and WeakPtr?**
 
