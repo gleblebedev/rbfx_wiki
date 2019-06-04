@@ -1,5 +1,3 @@
-# rbfx and Urho3D differences
-
 * AngelScript. This scripting engine is dependent on x86/64 architecture
   * Editor. It was written in AngelScript.
 * Lua. It was using tolua++ utility for generating bindings from manually crafted interfaces. Utility is outdated and no longer supported and each change to API had to be reflected in interface files. Support for Lua may be reintroduced in the future if anyone volunteers to implement bindings using swig which is both maintained and can automatically pick up new APIs.
