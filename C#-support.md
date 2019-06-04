@@ -1,21 +1,18 @@
-⚠️ C# support is experimental ⚠️
+⚠️ C# support is experimental ⚠️ It may not work correctly, fail or crash in spectacular ways. At the moment matrix and quaternion implementations are not compatible with their native counterparts therefore using them will result in incorrect results.
 
 ## Current C# wrapper features
 
 * Extensive API coverage estimated at 90%+
 * Support for inheriting native classes and overriding their virtual methods
 * Support for `ref` parameters
-* Support for native containers (`HashMap<T>`, `Vector<T>`, `PODVector<T>`)
+* Support for native containers (`ea::map<K, V>`, `ea::unordered_map<K, V>`, `ea::vector<T>`)
 * Transparently unwrapping `SharedPtr<T>` and `WeakPtr<T>`
 * Serialization and deserialization of managed components
 * Member variable and method renaming to match C# conventions
 
 ## Planned features
 
-* Managed plugins for applications and editor
 * Wrap physics subsystem
-* Wrap networking subsystem
-* Wrap Urho3D subsystem
 
 ## How the code looks
 
