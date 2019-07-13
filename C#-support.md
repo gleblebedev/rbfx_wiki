@@ -1,4 +1,4 @@
-⚠️ C# support is experimental ⚠️ It may not work correctly, fail or crash in spectacular ways. At the moment matrix and quaternion implementations are not compatible with their native counterparts therefore using them will result in incorrect results.
+⚠️ C# support is experimental ⚠️ It may not work correctly, fail or crash in spectacular ways. Managed APIs will likely change in the future.
 
 ## Current C# wrapper features
 
@@ -151,7 +151,6 @@ namespace DemoApplication
 ## Requirements
 
 * Mono (latest) or .NET framework (4.7.1)
-* SWIG (prebuilt binaries available for windows/macos/ubuntu 14.04)
 
 ## Build
 
@@ -164,9 +163,3 @@ namespace DemoApplication
   * Windows: Copy `bin/{Urho3D,Urho3DCSharp,ImGuiCSharp}.dll` to output directory.
   * MacOS: Copy `bin/lib{Urho3D,Urho3DCSharp,ImGuiCSharp}.dylib` to output directory.
 6. Build and run. For a quick test you may copy code from `Source/Samples/102_CSharpProject/Project.cs`.
-
-## Linux
-
-Project uses customized version of SWIG. Chances are prebuilt binaries will not run on your distribution.
-1. Download https://github.com/rokups/swig/archive/Urho3D.zip and build it.
-2. Additionally pass `-DSWIG_EXECUTABLE=/path/to/bin/swig -DSWIG_DIR=/path/to/share/swig/4.0.0` to cmake pointing to custom SWIG build.
