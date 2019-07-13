@@ -150,7 +150,8 @@ namespace DemoApplication
 
 ## Requirements
 
-* Mono (latest) or .NET framework (4.7 or later)
+* Mono 5.4.0 or later
+* .NET framework 4.7 or later
 
 ## Build
 
