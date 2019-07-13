@@ -150,7 +150,7 @@ namespace DemoApplication
 
 ## Requirements
 
-* Mono (latest) or .NET framework (4.7.1)
+* Mono (latest) or .NET framework (4.7 or later)
 
 ## Build
 
@@ -163,3 +163,7 @@ namespace DemoApplication
   * Windows: Copy `bin/{Urho3D,Urho3DCSharp,ImGuiCSharp}.dll` to output directory.
   * MacOS: Copy `bin/lib{Urho3D,Urho3DCSharp,ImGuiCSharp}.dylib` to output directory.
 6. Build and run. For a quick test you may copy code from `Source/Samples/102_CSharpProject/Project.cs`.
+
+## Other details
+
+You may specify `-DURHO3D_NETFX=<value>` to target specific framework version. `<value>` is one of .NET framework identifiers specified at https://docs.microsoft.com/en-us/dotnet/standard/frameworks. Default value is `net471`.
