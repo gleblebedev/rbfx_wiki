@@ -149,9 +149,9 @@ namespace DemoApplication
 3. Create C# project in IDE of your choice, targeting .NET framework 4.7.1.
 4. Copy `bin/CoreData` and `bin/Data` to output directory (where .exe will be created).
 5. Add `bin/{Urho3D,ImGui}Net.dll` as references to your project.
-  * Linux: Copy `bin/lib{Urho3D,Urho3DCSharp,ImGuiCSharp}.so` to output directory.
-  * Windows: Copy `bin/{Urho3D,Urho3DCSharp,ImGuiCSharp}.dll` to output directory.
-  * MacOS: Copy `bin/lib{Urho3D,Urho3DCSharp,ImGuiCSharp}.dylib` to output directory.
+  * Linux: Copy `bin/libUrho3D.so` to output directory.
+  * Windows: Copy `bin/Urho3D.dll` to output directory.
+  * MacOS: Copy `bin/libUrho3D.dylib` to output directory.
 6. Build and run. For a quick test you may copy code from `Source/Samples/102_CSharpProject/Project.cs`.
 
 ## Other details
