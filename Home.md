@@ -4,6 +4,7 @@ Welcome to the Urho3D wiki!
 * [Using SDK](Using-SDK)
 * [Profiling](Profiling)
 * [Editor Overview](Editor)
+  * [Plugins](Plugins)
 * [C# Support](C%23-support)
 * [External subsystems and samples](External-subsystems-and-samples)
 * [rbfx and Urho3D differences](rbfx-and-Urho3D-differences)
