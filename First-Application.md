@@ -29,7 +29,6 @@ target_link_libraries(AwesomeGame Urho3D)
 ```
 4. Create `main.cpp`.
 ```cpp
-builds. Use with care!
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Engine/EngineDefs.h>
 
