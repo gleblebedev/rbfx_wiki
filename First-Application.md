@@ -31,6 +31,7 @@ target_link_libraries(AwesomeGame Urho3D)
 ```cpp
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Engine/EngineDefs.h>
+#include <Urho3D/Input/Input.h>
 
 // This is probably always OK.
 using namespace Urho3D;
