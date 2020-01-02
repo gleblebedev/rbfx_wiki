@@ -9,6 +9,10 @@ cmake_minimum_required (VERSION 3.4.3)
 # Name your project. Can be anything.
 project (MyAwesomeGame)
 
+# Minimal supported C++ version.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Set binary output directories. Changing these paths will require you adjusting your resource path configuration!
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -25,8 +29,9 @@ target_link_libraries(AwesomeGame Urho3D)
 ```
 4. Create `main.cpp`.
 ```cpp
-// This include pulls in all engine headers. It is used for simplicity here, but overusing this may slow down your builds. Use with care!
-#include <Urho3D/Urho3DAll.h>
+builds. Use with care!
+#include <Urho3D/Engine/Application.h>
+#include <Urho3D/Engine/EngineDefs.h>
 
 // This is probably always OK.
 using namespace Urho3D;
@@ -50,17 +55,13 @@ public:
         engineParameters_[EP_WINDOW_HEIGHT] = 600;
         engineParameters_[EP_WINDOW_WIDTH] = 800;
         // Resource prefix path is a list of semicolon-separated paths which will be checked for containing resource directories. They are relative to application executable file.
-#if _WIN32
-        engineParameters_[EP_RESOURCE_PREFIX_PATHS] = "..";
-#else
-        engineParameters_[EP_RESOURCE_PREFIX_PATHS] = ".";
-#endif
+        engineParameters_[EP_RESOURCE_PREFIX_PATHS] = ".;..";
     }
 
     void Start() override
     {
         // At this point engine is initialized, but first frame was not rendered yet. Further setup should be done here. To make sample a little bit user friendly show mouse cursor here.
-        GetInput()->SetMouseVisible(true);
+        GetSubsystem<Input>()->SetMouseVisible(true);
     }
 
     void Stop() override
