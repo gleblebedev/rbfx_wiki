@@ -17,7 +17,7 @@ Migration is pretty much straightforward. Almost all `CamelCase` member function
 
 * **Urho3D** containter includes are removed.
 * `Urho3D::LinkedList` is replaced with `eastl::intrusive_list`. **List elements should be deleted maunally**.
-* `Urho3D::Vector` and `Urho3D::PODVector` are replaced with `eastl::vector`. **Note that index based `Insert` and `Erase` are renamed to `insert_at` and `erase_at`.**
+* `Urho3D::Vector` and `Urho3D::PODVector` are replaced with `eastl::vector`. **Note that index based `Insert` and `Erase` are renamed to `insert_at` and `erase_at`, and `PushBack(const Vector<T>& v)` is renamed to `append(const ea::vector<T>& v)`.**
 * `Urho3D::String` is replaced with `eastl::string`. **Use `eastl::to_string` to make string from number.**
 * `Urho3D::List` is replaced with `eastl::list`.
 * `Urho3D::Pair` is replaced with `eastl::pair`.
