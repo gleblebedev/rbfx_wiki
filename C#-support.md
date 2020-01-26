@@ -157,3 +157,7 @@ namespace DemoApplication
 ## Other details
 
 You may specify `-DURHO3D_NETFX=<value>` to target specific framework version. `<value>` is one of .NET framework identifiers specified at https://docs.microsoft.com/en-us/dotnet/standard/frameworks. Default value is `net471`.
+
+If you set up a custom `.csproj` project be aware that `PlatformTarget` property must match CPU architecture you are targetting (`x64` for 64bit and `x86` for 32bit). Otherwise you would get `BadImageFormatException` error. `AnyCPU` platform target will not work.
+
+When engine is built with `-DURHO3D_PLUGINS=ON` it will automatically compile `*.cs` scripts under `Scripts/` folder on resource path and make defined components available for use. You can find an example at [Scripts/RotateObject.cs](https://github.com/rokups/rbfx/blob/master/bin/Data/Scripts/RotateObject.cs).
