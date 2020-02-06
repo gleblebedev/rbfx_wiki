@@ -1,7 +1,7 @@
 This is a gentle introduction into writing your first application using the engine.
 
 1. Create a directory for your first project.
-2. Clone repository into that directory: `git clone https://github.com/rokups/Urho3D.git`
+2. Clone repository into that directory: `git clone https://github.com/rokups/rbfx.git`
 3. Create `CMakeLists.txt` file. This is your application project file.
 ```CMake
 cmake_minimum_required (VERSION 3.4.3)
