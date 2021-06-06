@@ -6,7 +6,8 @@ If you wish to maintain engine code outside of your project you may build engine
 Now `/path/to/SDK` contains a newly built engine SDK. In order to use SDK in your project import engine target in your CMake project:
 
 ```cmake
-include(/path/to/SDK/share/CMake/Urho3D.cmake)
+set(URHO3D_SDK /path/to/SDK/)  # Setting URHO3D_SDK variable is important!
+include(${URHO3D_SDK}/share/CMake/Urho3D.cmake)
 add_executable(YourApplication main.cpp)
 target_link_libraries(YourApplication Urho3D)
 ```
