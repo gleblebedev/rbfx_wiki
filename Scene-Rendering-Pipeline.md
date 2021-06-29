@@ -1,9 +1,7 @@
 # Viewport Management
 
-`Viewport` is the abstraction of screen or texture rectangle which behaves as destination point for any `RenderPipeline`.
-
-Main window and each render target can have unlimited amount of viewports.
-They almost always need at least one.
+`Viewport` is window or texture rectangle which is destination point for rendering operations.
+Main window and each render target may have unlimited amount of viewports, but they almost always need at least one.
 
 If several `Viewport`-s overlap in destination texture, `Viewport` with higher index will take precedence.
 
@@ -13,13 +11,13 @@ If `RenderPipeline` doesn't clear its region of destination texture, the content
 
 # Render Pipeline
 
-`RenderPipeline` is root level scene component that manages rendering pipeline and keeps current rendering settings.
-`RenderPipeline` spawns one `RenderPipelineView` per viewport containing rendered scene.
+`RenderPipeline` is the root level scene component that manages scene rendering and keeps current rendering settings.
+`RenderPipeline` spawns one `RenderPipelineView` per viewport rendering this scene.
 `RenderPipeline` doesn't do any rendering logic on its own, `RenderPipelineView` does actual rendering.
 
 TODO: Support of multiple `RenderPipeline` objects in one scene may be implemented using view masks on demand.
 
-Component `RenderPipeline` or its derived component should be present in the root node of the `Scene` in order to execute scene rendering pipeline.
+`RenderPipeline` or derived component should be present in the root node of the `Scene` in order to render scene.
 If no such component exists and legacy render is disabled, new instance of `RenderPipeline` component is created automatically.
 
 # Default `RenderPipeline`
@@ -42,6 +40,8 @@ Gamma vs Linear color space:
 Colors in **Low Dynamic Range** aka **LDR** are in range `[0, 1]` with fixed precision of `1/256`. **LDR** is supported on all platforms. Also, it's easier to work with: there's no need to worry about converting final image to displayable color (no tone mapping needed).
 
 Colors in **High Dynamic Range** aka **HDR** are in range `[0, 65504]` with relative precision of `1/1024`. **HDR** enables more realistic light intensities and more correct effects like bloom or reflections.
+
+TODO: Improve support of HDR assets.
 
 ## Lighting Modes
 
@@ -77,8 +77,22 @@ All per-pixel lights affecting geometry are rendered in each own separate pass (
 
 ### Deferred Lighting
 
-Geometry is rendered to geometry buffer just once (deferred pass).
+Geometry is rendered to geometry buffer textures just once (deferred pass).
 All lights are per-pixel and applied in post-processing afterwards.
+
+Geometry buffer layout:
+
+|Channel|Description|
+|-|-|
+|`color[0].rgba`|Final color with applied ambient, emission, light maps and light probes|
+|`color[1].rgb`|Albedo color|
+|`color[1].a`|Unused|
+|`color[2].rgb`|Specular color|
+|`color[2].a`|Roughness (for PBR rendering) or specular power remapped from `[0, 255]` to `[1, 0]` (for non-PBR rendering)|
+|`color[3].rgb`|Normal in world space remapped from `[-1, 1]` to `[0, 1]`|
+|`color[3].a`|Unused|
+
+World-space position is reconstructed from depth buffer.
 
 ## Shadows
 
@@ -94,9 +108,9 @@ Shadows maps may be filtered using Percentage Closer Filtering (`1x1`, `2x2`, `3
 
 When all HDR-related effects are applied, it's necessary to convert HDR texture back to LDR.
 
-**Exposition** allows to control how bright scene should be for the camera.
+**Exposure** allows to control how bright scene should be for the camera.
 Higher exposure -- brighter picture.
-If auto-exposition is enabled, `RenderPipeline` will try to guess best exposure and smoothly adjust to it.
+If auto-exposure is enabled, `RenderPipeline` will try to guess best exposure and smoothly adjust to it.
 
 **Tone Mapping** converts HDR to LDR using some heuristic formulas. If tone mapping is disabled, HDR colors are just trimmed to `[0, 1]`.
 
