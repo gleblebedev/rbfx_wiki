@@ -9,7 +9,7 @@ If `RenderPipeline` doesn't clear its region of destination texture, the content
 
 `Viewport` ignores `RenderPath` if `RenderPipeline` is used.
 
-# Render Pipeline
+# Render Pipeline Basics
 
 `RenderPipeline` is the root level scene component that manages scene rendering and keeps current rendering settings.
 `RenderPipeline` spawns one `RenderPipelineView` per viewport rendering this scene.
@@ -20,7 +20,7 @@ TODO: Support of multiple `RenderPipeline` objects in one scene may be implement
 `RenderPipeline` or derived component should be present in the root node of the `Scene` in order to render scene.
 If no such component exists and legacy render is disabled, new instance of `RenderPipeline` component is created automatically.
 
-# Default `RenderPipeline`
+# Default Render Pipeline
 
 ## Color space
 
@@ -189,14 +189,18 @@ This behavior cannot be disabled. Check for minimal system requirements manually
 
 ### Examples
 
-Disabled vs enabled normal mapping controlled by `Material Quality`:
+Disabled vs enabled normal mapping controlled by **Material Quality**:
 
 [[images/Low-vs-Medium-Material-Quality.png]]
 
-Simple vs Antialiased specular:
+Simple vs Antialiased **Specular Quality**:
 
 [[images/Simple-vs-Antialiased-Specular.png]]
 
-Pixel vs Vertex reflection:
+Vertex vs Pixel **Reflection Quality**:
 
-[[images/Pixel-vs-Vertex-Reflection.png]]
+[[images/Vertex-vs-Pixel-Reflection.png]]
+
+Flat vs Directional **Ambient Mode**:
+
+[[images/Flat-vs-Directional-Ambient.png]]
