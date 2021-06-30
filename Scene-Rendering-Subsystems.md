@@ -20,6 +20,9 @@ See [Scene rendering pipeline](Scene-Rendering-Pipeline) for details.
 
 `LightBaker` is root-level `Scene` component that controls light baking quality.
 
+It is required to bake lighting, otherwise it is unused.
+Click **Bake!** or call `Bake()`/`BakeAsync()` to re-bake all the lighting in the `Scene`.
+
 ### Basic settings
 
 |Name|Description|
