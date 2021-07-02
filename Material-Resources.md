@@ -53,11 +53,13 @@ Each `Material` may declare zero or more shader parameters of the following type
 - **Vector3**
 - **Vector4**
 
-Shader parameters are passed to shader as is into **Material** uniform group, with some exceptions:
+Shader parameters are passed to shader into **Material**, mostly without any additional transformations.
 
-|Name|Type|Description|Shader input|
-|-|-|-|-|
-|**FadeOffsetScale**|**Vector2**|Defines depth offset and range in units for soft edges e.g. for particles and water.|Shader receives values normalized to camera z range. Depth range is inverted.|
+See `Material` section in `_Uniforms.glsl` for exact list of default parameters.
+
+Special notes:
+
+* **FadeOffsetScale** defines depth offset and range in units for soft edges e.g. for particles and water. Shader receives values normalized to camera z range. Depth range is inverted.
 
 ### Shader Defines
 
