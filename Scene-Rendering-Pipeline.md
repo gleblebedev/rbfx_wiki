@@ -127,7 +127,7 @@ This behavior cannot be disabled. Check for minimal system requirements manually
 
 ### Common properties
 
-|Name|Description|
+|Property|Description|
 |-|-|
 |**Color Space**|Defines color space and color range used for color buffer.|
 |> LDR Gamma|Low dynamic range, Gamma color space.|
@@ -160,7 +160,7 @@ This behavior cannot be disabled. Check for minimal system requirements manually
 
 ### Shadow properties
 
-|Name|Description|
+|Property|Description|
 |-|-|
 |**Enable Shadows**|Whether to enable shadows.|
 |**PCF Kernel Size**|Size of shadow smoothing filter kernel. Could be 1, 2, 3 or 5.|
@@ -171,7 +171,7 @@ This behavior cannot be disabled. Check for minimal system requirements manually
 
 ### Post-processing settings
 
-|Name|Description|
+|Property|Description|
 |-|-|
 |**Auto Exposure**|HDR only. Whether to adjust exposure automatically.|
 |**Min Exposure**|HDR only. Minimum possible exposure. Currently used exposure if **Auto Exposure** is disabled.|
