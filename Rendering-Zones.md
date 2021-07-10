@@ -6,7 +6,9 @@ All zone components have property **Is Enabled** and can be disabled or enabled 
 
 ## Zone
 
-`Zone` is special kind of `Drawable` that defines global rendering properties of OBB (oriented bounding box) region of the `Scene`.
+`Zone` is special kind of `Drawable` that defines global rendering properties for OBB (oriented bounding box) region of the `Scene`.
+
+Some properties affect individual objects within the zone, other properties affect `Camera` itself when it enters the zone.
 
 ### Basic Properties
 

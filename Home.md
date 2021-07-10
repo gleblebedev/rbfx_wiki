@@ -75,8 +75,8 @@ Use this wiki together with reading framework headers in `Source/Urho3D/*` and r
 * Scene Components:
   * [Subsystems](Scene-Rendering-Subsystems)
   * [Zones](Rendering-Zones)
-  * [Geometries](Rendering-Geometries)
   * [Lights](Rendering-Lights)
+  * [Geometries](Rendering-Geometries)
 * Resources:
   * [Models](Model-Resources)
   * [Materials](Material-Resources)
