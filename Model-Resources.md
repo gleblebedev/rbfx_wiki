@@ -4,7 +4,7 @@
 `Model` also contain `Skeleton` for skeletal animation and some extra metadata.
 
 **Note:** `Model` contains prepared data ready for rendering.
-Use `ModelView` to access `Model` data in easy-to-use format.
+Use `ModelView` to access model data in easy-to-use format.
 
 `Model` is stored in the file system as `*.mdl` file which contains main data and optional `*.xml` auxiliary file which contains arbitrary metadata.
 

@@ -1,6 +1,6 @@
 # Scene Subsystems
 
-Scene subsystems are root level `Scene` components, i.e. assigned to `Scene` itself.
+Scene subsystems are root level `Scene` components, i.e. assigned to the `Scene` itself.
 Subsystems should have at most one instance per `Scene`.
 
 Scene subsystems are used to enable some of global features affecting scene as whole.

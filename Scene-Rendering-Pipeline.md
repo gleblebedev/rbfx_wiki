@@ -3,9 +3,9 @@
 `Viewport` is window or texture rectangle which is destination point for rendering operations.
 Main window and each render target may have unlimited amount of viewports, but they almost always need at least one.
 
-If several `Viewport`-s overlap in destination texture, `Viewport` with higher index will take precedence.
+If several viewports overlap in destination texture, `Viewport` with higher index will take precedence.
 
-If `RenderPipeline` doesn't clear its region of destination texture, the contents of it are undefined.
+Unless `RenderPipeline` clears destination region of the viewport, the initial contents are undefined.
 
 `Viewport` ignores `RenderPath` if `RenderPipeline` is used.
 

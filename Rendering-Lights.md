@@ -17,14 +17,14 @@ Try to have at most one enabled **Directional** light in the `Scene` for sake of
 
 ### > Spot
 
-Light is emitted from finite point to one dominant direction with specified spread. Example: flashlight.
+Light is emitted from light source position to one dominant direction with configured spread. Example: flashlight.
 
 Spot lights support relatively cheap shadows.
 Prefer spot lights to point lights whenever possible.
 
 ### > Point
 
-Light is emitted from finite point to all directions equally. Examples: campfire, torch.
+Light is emitted from light source position to all directions equally. Examples: campfire, torch.
 
 Shadows are relatively expensive.
 

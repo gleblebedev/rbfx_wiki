@@ -23,15 +23,15 @@ Masks are used to split objects into different layers which don't affect each ot
 
 **Zone Mask** controls whether the geometry or `LightProbeGroup` is affected by the `Zone`. Condition:
 
-`zone.[Zone Mask] & geometry.[Zone Mask] != 0`
+`zone.zone_mask & geometry.zone_mask != 0`
 
 **Light Mask** controls whether the geometry or `LightProbeGroup` *affected by the zone* is lit by light source. Condition:
 
-`zone.[Light Mask] & geometry.[Light Mask] & light.[Light Mask] != 0`
+`zone.light_mask & geometry.light_mask & light.light_mask != 0`
 
 **Shadow Mask** controls whether the geometry *affected by the zone* cast shadows for given light source. Condition:
 
-`zone.[Shadow Mask] & geometry.[Shadow Mask] & light.[Shadow Mask] != 0`
+`zone.shadow_mask & geometry.shadow_mask & light.shadow_mask != 0`
 
 ### Ambient Properties
 
