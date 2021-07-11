@@ -95,3 +95,35 @@ Optional.
 
 All non-standard user passes are ignored by default `RenderPipeline`.
 They can be used in arbitrary user code.
+
+## Built-in Techniques
+
+### Lit Techniques
+
+Materials that use lit techniques will receive lighting from direct, indirect and ambient light sources.
+
+|Name|Description|
+|-|-|
+|**LitOpaque**|Opaque surface. Note that surfaces that use `ALPHAMASK` macro to make holes in the geometry are also considered opaque.|
+|**LitTransparent**|Translucent surface with physically correct bright specular highlights (e.g. glass).|
+|**LitTransparentFade**|Translucent surface with unrealistic faded specular highlights (e.g. hologram or ghost).|
+|**LitWater**|Water technique: distorts and fades background objects.|
+|**LitLegacyTerrain**|Legacy terrain shader that supports up to 3 diffuse textures blended by mask.|
+
+There are aliases for techniques with `NORMALMAP` defined.
+The only difference is that normal map from `Material` is used when possible.
+
+|Name|Description|
+|-|-|
+|**LitOpaqueNormalMap**|Same as **LitOpaque** but with normal mapping.|
+|**LitTransparentNormalMap**|Same as **LitTransparent** but with normal mapping.|
+|**LitTransparentFadeNormalMap**|Same as **LitTransparentFade** but with normal mapping.|
+
+### Unlit Techniques
+
+Unlit techniques ignore all scene lighting and render input textures "as is".
+
+|Name|Description|
+|-|-|
+|**UnlitOpaque**|Opaque surface. Note that surfaces that use `ALPHAMASK` macro to make holes in the geometry are also considered opaque.|
+|**UnlitTransparent**|Translucent surface.|
